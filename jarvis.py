@@ -1,6 +1,23 @@
 # TNI HOLDINGS - WHOLE SYSTEM - CLEAN VERSION - NO EMOJI
 # Maya Cars + Aya House + Gadget Hub + Jarvis + Luna
 
+import os
+from http.server import BaseHTTPRequestHandler, HTTPServer
+import threading
+
+# Keep Render alive - Web Server
+def keep_alive():
+    port = int(os.environ.get("PORT", 10000))
+    class Handler(BaseHTTPRequestHandler):
+        def do_GET(self):
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"TNI Holdings Bot is Running!")
+        def log_message(self, *args):
+            pass
+    HTTPServer(("0.0.0.0", port), Handler).serve_forever()
+
+threading.Thread(target=keep_alive, daemon=True).start()
 import asyncio
 import smtplib
 from email.mime.text import MIMEText
